@@ -32,7 +32,7 @@ const copy = {
     options: [["Faire connaître ma marque", "Vendre un produit", "Créer régulièrement"], ["UGC / témoignage", "Pub produit", "Série de contenus"], ["Dès que possible", "Ce mois-ci", "Je prépare mon projet"]],
     resultTag: "Votre piste créative", resultTitle: "Commencez par un concept pilote, puis déclinez ce qui capte le mieux l’attention.",
     resultText: "Votre mini-brief est prêt. Envoyez-le-nous : nous reviendrons avec un premier angle créatif adapté.",
-    send: "Envoyer mon brief par email", restart: "Recommencer",
+    send: "Envoyer mon brief par Gmail", restart: "Recommencer", copyEmail: "Copier l’adresse email", copied: "Adresse copiée !",
     faqTag: "Questions fréquentes", faqTitle: "Clair avant de créer.",
     faqs: [["Est-ce que tout est généré par IA ?", "L’IA accélère la production. La stratégie, l’idée, la sélection et la finition restent dirigées humainement."], ["Pouvez-vous créer en Darja ?", "Oui. La localisation tunisienne, les voix et les codes culturels font partie de notre approche."], ["Quels produits pouvez-vous mettre en scène ?", "Produits physiques, applications, services et concepts de marque. Le brief nous aide à choisir le bon format."], ["Comment démarre un projet ?", "Envoyez le mini-brief ou un DM Instagram. Nous clarifions ensuite le besoin, les livrables et le calendrier."]],
     finalEyebrow: "Une idée en tête ?", finalTitle: "Faisons-en le contenu que votre audience n’oubliera pas.",
@@ -58,7 +58,7 @@ const copy = {
     questions: ["شنية الأولوية توّة؟", "شنوة الفورما اللي تحب عليه؟", "وقتاش تحب تطلق؟"],
     options: [["نعرّف بالبراند", "نبيع برودوي", "نصنع كونتنو بانتظام"], ["UGC / تجربة", "إشهار برودوي", "سلسلة كونتنو"], ["في أقرب وقت", "الشهر هذا", "مازلت نحضّر"]],
     resultTag: "الفكرة الأنسب ليك", resultTitle: "نبداو بكونسبت pilot، وبعد نطوّرو الزاوية اللي تشدّ أكثر.", resultText: "الـmini-brief حاضر. ابعثهولنا ونرجعولك بأول زاوية كرياتيف تناسب مشروعك.",
-    send: "نبعث الـbrief بالإيميل", restart: "نعاود", faqTag: "أسئلة تتعاود", faqTitle: "نفهمو كل شي قبل ما نبدعو.",
+    send: "نبعث الـbrief بـGmail", restart: "نعاود", copyEmail: "ننسخ الإيميل", copied: "الإيميل تنسخ !", faqTag: "أسئلة تتعاود", faqTitle: "نفهمو كل شي قبل ما نبدعو.",
     faqs: [["كل شي مصنوع بالـAI؟", "الـAI يسرّع الإنتاج. أما الستراتيجي، الفكرة والـfinition يقودهم إنسان."], ["تنجموا تصنعوا بالدارجة؟", "إي. الدارجة، الصوت والكودات التونسية في قلب خدمتنا."], ["شنوة تنجموا تحطّو في الإشهار؟", "برودويات، applications، services وأفكار براند. الـbrief يحدّد أحسن فورما."], ["كيفاش نبداو؟", "ابعث الـmini-brief ولا DM على Instagram، وبعد نوضحو الخدمة والوقت."]],
     finalEyebrow: "عندك فكرة؟", finalTitle: "نحوّلوها لكونتنو جمهورك ما ينساهش.", finalText: "ابعثلنا البرودوي، الهدف وreference يعجبك.",
     email: "إيميل", dm: "DM على Instagram", based: "من نابل · نخدمو في كل بلاصة", rights: "AI Marketing Tunisia — الحقوق محفوظة.",
@@ -82,7 +82,7 @@ const copy = {
     questions: ["What is your priority?", "Which format interests you?", "When do you want to launch?"],
     options: [["Build brand awareness", "Sell a product", "Create consistently"], ["UGC / testimonial", "Product ad", "Content series"], ["As soon as possible", "This month", "I’m still planning"]],
     resultTag: "Your creative direction", resultTitle: "Start with one pilot concept, then scale the angle that earns the most attention.", resultText: "Your mini-brief is ready. Send it and we’ll return with an initial creative angle for your brand.",
-    send: "Email my brief", restart: "Start again", faqTag: "Frequently asked", faqTitle: "Clarity before creativity.",
+    send: "Send my brief with Gmail", restart: "Start again", copyEmail: "Copy email address", copied: "Email copied!", faqTag: "Frequently asked", faqTitle: "Clarity before creativity.",
     faqs: [["Is everything AI-generated?", "AI accelerates production. Strategy, ideas, selection and final craft remain human-directed."], ["Can you create in Tunisian Derja?", "Yes. Local language, voices and cultural codes are central to how we work."], ["What can you advertise?", "Physical products, apps, services and brand concepts. Your brief helps us pick the right format."], ["How does a project start?", "Send the mini-brief or an Instagram DM. We’ll clarify the need, deliverables and timing."]],
     finalEyebrow: "Have an idea?", finalTitle: "Let’s turn it into content your audience remembers.", finalText: "Send us your product, your goal and one reference you love.",
     email: "Email us", dm: "Send a DM", based: "Based in Nabeul · Available everywhere", rights: "AI Marketing Tunisia — All rights reserved.",
@@ -97,6 +97,7 @@ export default function AgencySite() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [copied, setCopied] = useState(false);
   const t = copy[lang];
 
   useEffect(() => {
@@ -107,11 +108,33 @@ export default function AgencySite() {
   const emailHref = useMemo(() => {
     const subject = lang === "tn" ? "Mini-brief — مشروع جديد" : lang === "en" ? "Mini-brief — New project" : "Mini-brief — Nouveau projet";
     const body = `${t.questions.map((q, i) => `${q}\n${answers[i] || "—"}`).join("\n\n")}\n\nInstagram / site : `;
-    return `mailto:aimarketingagencytn@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=aimarketingagencytn@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }, [answers, lang, t.questions]);
+
+  const directEmailHref = useMemo(() => {
+    const subject = lang === "tn" ? "مشروع جديد" : lang === "en" ? "New project inquiry" : "Demande de nouveau projet";
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=aimarketingagencytn@gmail.com&su=${encodeURIComponent(subject)}`;
+  }, [lang]);
 
   function choose(answer: string) { const next = [...answers]; next[step] = answer; setAnswers(next); setStep(step + 1); }
   function resetQuiz() { setAnswers([]); setStep(0); }
+  async function copyEmailAddress() {
+    const email = "aimarketingagencytn@gmail.com";
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = email;
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand("copy");
+      field.remove();
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2400);
+  }
   function trackPointer(event: React.PointerEvent<HTMLElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
     event.currentTarget.style.setProperty("--mx", `${event.clientX - rect.left}px`);
@@ -174,7 +197,7 @@ export default function AgencySite() {
         <div className="diag-copy"><p className="section-tag">{t.diagTag}</p><h2>{t.diagTitle}</h2><p>{t.diagText}</p><div className="diag-progress" aria-label={`${Math.min(step, 3)} / 3`}><span style={{ width: `${Math.min(step, 3) * 33.333}%` }}></span></div></div>
         <div className="quiz-card">
           {step < 3 ? <><span className="quiz-count">0{step + 1} / 03</span><h3>{t.questions[step]}</h3><div className="quiz-options">{t.options[step].map(option => <button key={option} onClick={() => choose(option)}><span></span>{option}<b>→</b></button>)}</div></> :
-          <div className="quiz-result"><span className="result-check">✓</span><p className="section-tag">{t.resultTag}</p><h3>{t.resultTitle}</h3><p>{t.resultText}</p><div className="answer-chips">{answers.map(answer => <span key={answer}>{answer}</span>)}</div><a className="button button-accent" href={emailHref}>{t.send} <span>↗</span></a><button className="restart" onClick={resetQuiz}>{t.restart}</button></div>}
+          <div className="quiz-result"><span className="result-check">✓</span><p className="section-tag">{t.resultTag}</p><h3>{t.resultTitle}</h3><p>{t.resultText}</p><div className="answer-chips">{answers.map(answer => <span key={answer}>{answer}</span>)}</div><div className="email-actions"><a className="button button-accent" href={emailHref} target="_blank" rel="noreferrer">{t.send} <span>↗</span></a><button className="copy-email" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button></div><button className="restart" onClick={resetQuiz}>{t.restart}</button></div>}
         </div>
       </section>
 
@@ -183,10 +206,10 @@ export default function AgencySite() {
         <div className="faq-list">{t.faqs.map(([question, answer], i) => <details key={question} open={i === 0}><summary>{question}<span>＋</span></summary><p>{answer}</p></details>)}</div>
       </section>
 
-      <section className="final-cta"><p className="eyebrow light"><span></span>{t.finalEyebrow}</p><h2>{t.finalTitle}</h2><p>{t.finalText}</p><div><a className="button button-accent" href="mailto:aimarketingagencytn@gmail.com">{t.email} ↗</a><a className="button button-outline" href="https://www.instagram.com/aimarketingagencytn/" target="_blank" rel="noreferrer">{t.dm} ↗</a></div></section>
+      <section className="final-cta"><p className="eyebrow light"><span></span>{t.finalEyebrow}</p><h2>{t.finalTitle}</h2><p>{t.finalText}</p><div><a className="button button-accent" href={directEmailHref} target="_blank" rel="noreferrer">{t.email} ↗</a><button className="button button-outline" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button><a className="button button-outline" href="https://www.instagram.com/aimarketingagencytn/" target="_blank" rel="noreferrer">{t.dm} ↗</a></div></section>
       <footer>
         <a className="brand footer-brand" href="#top"><img src="/brand/instagram-logo.jpg" alt="" /><span>AI Marketing<br /><b>Tunisia</b></span></a>
-        <div className="footer-contact"><a href="mailto:aimarketingagencytn@gmail.com">aimarketingagencytn@gmail.com</a><p>{t.based}</p></div>
+        <div className="footer-contact"><a href={directEmailHref} target="_blank" rel="noreferrer">aimarketingagencytn@gmail.com</a><button className="footer-copy" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button><p>{t.based}</p></div>
         <p className="copyright">© {new Date().getFullYear()} {t.rights}</p>
       </footer>
       <a className="mobile-cta" href="#diagnostic">{t.audit} ↗</a>
