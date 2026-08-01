@@ -32,10 +32,14 @@ test("server-renders the performance creative homepage", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>AI Marketing Tunisia — Publicités vidéo &amp; statiques pensées pour convertir<\/title>/i);
-  assert.match(html, /Des pubs qui arrêtent le scroll\./);
-  assert.match(html, /Et donnent envie d’acheter\./);
+  assert.match(html, /Des pubs IA qui/);
+  assert.match(html, /ne ressemblent pas à de l’IA\./);
+  assert.match(html, /product-reel-volcano\.png/);
   assert.match(html, /34\.5K/);
   assert.match(html, /638/);
+  assert.match(html, /Des idées qui prennent vie, image après image\./);
+  assert.match(html, /reel-01\.jpg/);
+  assert.match(html, /reel-05\.jpg/);
   assert.match(html, /Six angles\. Un seul produit\. Zéro répétition\./);
   assert.match(html, /https:\/\/www\.instagram\.com\/aimarketingagencytn\//);
   assert.match(html, /tunisian-rocking-chair-comparison-ad\.webp/);

@@ -9,6 +9,14 @@ type Lang = "fr" | "tn" | "en";
 const instagramProfile = "https://www.instagram.com/aimarketingagencytn/";
 const trendCaseUrl = "https://www.instagram.com/p/DYVANyKC1O5/";
 const ugcCaseUrl = "https://www.instagram.com/p/DZYIbyDuWxz/";
+const projectLinks = [
+  "https://www.instagram.com/reel/DYsN4QcufaY/",
+  "https://www.instagram.com/reel/DaLVVZpNgA_/",
+  "https://www.instagram.com/reel/DaGkOlOOqCT/",
+  "https://www.instagram.com/reel/DZnBZNJNh1j/",
+  "https://www.instagram.com/reel/DZX2LpDOfUX/",
+] as const;
+const projectImages = ["/work/reel-01.jpg", "/work/reel-02.jpg", "/work/reel-03.jpg", "/work/reel-04.jpg", "/work/reel-05.jpg"] as const;
 
 const staticAds = [
   { src: "/work/static-ads/tunisian-rocking-chair-comparison-ad.webp", angle: "Comparison", alt: "Publicité comparative tunisienne pour une chaise basculante en bois massif et cuir capitonné" },
@@ -21,16 +29,16 @@ const staticAds = [
 
 const copy = {
   fr: {
-    nav: ["Offres", "Résultats", "Créations", "Méthode", "FAQ"],
+    nav: ["Services", "Réalisations", "Méthode", "FAQ"],
+    headerCta: "Démarrer un projet",
     dm: "Envoyer mon produit",
-    eyebrow: "Performance creative agency · Tunisie",
-    heroA: "Des pubs qui arrêtent le scroll.",
-    heroB: "Et donnent envie d’acheter.",
-    heroText: "Vidéos publicitaires, UGC en Derja et visuels statiques pour les commerces, services et marques e-commerce tunisiennes.",
-    heroNote: "Pas de script ? Pas de stratégie ? Envoyez une photo. Nous trouvons l’angle.",
-    seeCases: "Voir nos concepts",
-    visualTag: "Vidéo + statique",
-    visualText: "Pensé pour attirer. Construit pour convaincre.",
+    eyebrow: "Studio créatif IA · Nabeul, Tunisie",
+    heroA: "Des pubs IA qui",
+    heroB: "ne ressemblent pas à de l’IA.",
+    heroText: "Concept, storytelling, voix et production : nous transformons vos produits en contenus qui arrêtent le scroll — avec une vraie touche tunisienne.",
+    audit: "Recevoir mon mini-audit",
+    seeCases: "Voir les réalisations",
+    visualText: "Créé en Tunisie. Pensé pour performer partout.",
     proofTrend: "sur une création trend originale",
     proofComments: "commentaires organiques",
     proofLanguages: "Français · Derja · English",
@@ -57,6 +65,11 @@ const copy = {
     viewPost: "Voir la création originale",
     likes: "J’aime",
     comments: "Commentaires",
+    selected: "Sélection récente",
+    workTitle: "Des idées qui prennent vie, image après image.",
+    workNote: "Extraits de Reels publiés sur notre Instagram. Cliquez pour voir le contenu original.",
+    projects: [["Produit → Reel", "Une image produit transformée en vidéo de vente hyper-réaliste."], ["Culture & sport", "Création visuelle forte autour d’un moment qui rassemble."], ["Hyper Reel", "Un contenu ordinaire repensé pour gagner en valeur perçue."], ["UGC tunisien", "Une histoire locale racontée avec des personnages générés par IA."], ["Démo produit", "Une situation d’usage simple, claire et immédiatement compréhensible."]],
+    allInstagram: "Explorer notre Instagram",
     staticTag: "Static creative system",
     staticTitle: "Six angles. Un seul produit. Zéro répétition.",
     staticText: "Ces créations partent d’une simple photo produit. Chaque visuel attaque une motivation différente : comparer, rassurer, projeter, émouvoir ou prouver la qualité.",
@@ -94,16 +107,16 @@ const copy = {
     rights: "AI Marketing Tunisia — Tous droits réservés.",
   },
   tn: {
-    nav: ["شنوة نصنعو", "النتائج", "الكرياتيف", "كيفاش نخدمو", "أسئلة"],
+    nav: ["الخدمات", "خدمتنا", "كيفاش نخدمو", "أسئلة"],
+    headerCta: "نبداو مشروع",
     dm: "ابعث البرودوي",
-    eyebrow: "Performance creative agency · تونس",
-    heroA: "إشهار يوقّف السكرول.",
-    heroB: "ويخلّي الناس تحب تشري.",
-    heroText: "Video ads، UGC بالدارجة وstatic visuals للتجار، الخدمات والـe-commerce التونسي.",
-    heroNote: "ما عندكش script ولا stratégie؟ ابعث تصويرة وإحنا نلقاو الزاوية.",
-    seeCases: "شوف الكونسبتات",
-    visualTag: "Video + Static",
-    visualText: "يشدّ الانتباه. يقنع. يبيع.",
+    eyebrow: "ستوديو إبداع بالـAI · نابل، تونس",
+    heroA: "إشهار بالـAI",
+    heroB: "ما يبانش مصنوع بالـAI.",
+    heroText: "من الفكرة والستوري للـvoice-over والمونتاج: نحوّلو البرودوي متاعك لكونتنو يوقّف السكرول، بلمسة تونسية صحيحة.",
+    audit: "نحب mini-audit",
+    seeCases: "نشوف خدمتكم",
+    visualText: "مصنوع في تونس. يخدم وين ما كان.",
     proofTrend: "على trend creative أصلية",
     proofComments: "تعليقات طبيعية",
     proofLanguages: "Français · Derja · English",
@@ -130,6 +143,11 @@ const copy = {
     viewPost: "شوف الكرياتيف الأصلية",
     likes: "J’aime",
     comments: "تعليقات",
+    selected: "آخر الإبداعات",
+    workTitle: "أفكار تولّي حقيقة، صورة بصورة.",
+    workNote: "لقطات من Reels منشورين على Instagram. إضغط باش تشوف الأصل.",
+    projects: [["من برودوي لـReel", "تصويرة برودوي تولّي فيديو بيع واقعي."], ["ثقافة وسبور", "Visual قوي على لحظة تجمع التوانسة."], ["Hyper Reel", "كونتنو عادي نطلّعولو القيمة."], ["UGC تونسي", "حكاية من ثقافتنا بشخصيات معمولة بالـAI."], ["Démo produit", "استعمال واضح وساهل يتفهم من أول نظرة."]],
+    allInstagram: "نشوفو الكل على Instagram",
     staticTag: "Static creative system",
     staticTitle: "6 زوايا. برودوي واحد. بلا تكرار.",
     staticText: "الكل بدا بتصويرة برودوي. كل visual يخدم motivation مختلفة: نقارنو، نطمّنو، نخليو الحريف يتخيّل، نحركو الإحساس ولا نورّيو الجودة.",
@@ -167,16 +185,16 @@ const copy = {
     rights: "AI Marketing Tunisia — الحقوق محفوظة.",
   },
   en: {
-    nav: ["Offers", "Results", "Creative", "Process", "FAQ"],
+    nav: ["Services", "Work", "Process", "FAQ"],
+    headerCta: "Start a project",
     dm: "Send your product",
-    eyebrow: "Performance creative agency · Tunisia",
-    heroA: "Ads that stop the scroll.",
-    heroB: "And make people want the product.",
-    heroText: "Video ads, Tunisian UGC and static creatives for local shops, service businesses and ecommerce brands.",
-    heroNote: "No script? No strategy? Send a product photo. We will find the angle.",
-    seeCases: "See our concepts",
-    visualTag: "Video + static",
-    visualText: "Built to attract. Structured to persuade.",
+    eyebrow: "AI creative studio · Nabeul, Tunisia",
+    heroA: "AI ads that",
+    heroB: "don’t look AI-made.",
+    heroText: "Concept, storytelling, voice and production: we turn your products into scroll-stopping content—with an authentic Tunisian touch.",
+    audit: "Get my mini-audit",
+    seeCases: "See our work",
+    visualText: "Made in Tunisia. Built to perform anywhere.",
     proofTrend: "on one original trend creative",
     proofComments: "organic comments",
     proofLanguages: "French · Derja · English",
@@ -203,6 +221,11 @@ const copy = {
     viewPost: "View the original creative",
     likes: "Likes",
     comments: "Comments",
+    selected: "Recent selection",
+    workTitle: "Ideas brought to life, frame by frame.",
+    workNote: "Still frames from Reels published on our Instagram. Click to see the original.",
+    projects: [["Product → Reel", "One product image transformed into a hyper-real sales video."], ["Culture & sport", "A bold visual built around a moment that brings people together."], ["Hyper Reel", "Ordinary content reworked to increase perceived value."], ["Tunisian UGC", "A local story told with AI-generated characters."], ["Product demo", "A simple use case that is instantly easy to understand."]],
+    allInstagram: "Explore our Instagram",
     staticTag: "Static creative system",
     staticTitle: "Six angles. One product. Zero repetition.",
     staticText: "Every creative started with a simple product photo. Each visual targets a different motivation: comparison, reassurance, aspiration, emotion or quality proof.",
@@ -268,7 +291,7 @@ export default function AgencySite() {
     };
   }, []);
 
-  const navIds = ["offers", "results", "creative", "method", "faq"];
+  const navIds = ["offers", "realisations", "method", "faq"];
   const year = useMemo(() => new Date().getFullYear(), []);
 
   function chooseLang(next: Lang) {
@@ -291,28 +314,28 @@ export default function AgencySite() {
           <div className="lang-switch" aria-label="Langue">
             {(["fr", "tn", "en"] as Lang[]).map(code => <button key={code} className={lang === code ? "active" : ""} onClick={() => chooseLang(code)} aria-pressed={lang === code}>{code === "tn" ? "تونسي" : code.toUpperCase()}</button>)}
           </div>
-          <a className="button button-dark header-cta" href={instagramProfile} target="_blank" rel="noreferrer">{t.dm} <span>↗</span></a>
+          <a className="button button-dark header-cta" href="#starter">{t.headerCta} <span>↗</span></a>
         </div>
       </header>
 
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow"><span />{t.eyebrow}</p>
-          <h1>{t.heroA}<em>{t.heroB}</em></h1>
+          <h1>{t.heroA}<br /><em>{t.heroB}</em></h1>
           <p className="hero-text">{t.heroText}</p>
           <div className="hero-actions">
-            <a className="button button-accent" href={instagramProfile} target="_blank" rel="noreferrer">{t.dm} <span>↗</span></a>
-            <a className="text-link" href="#results">{t.seeCases} <span>↓</span></a>
+            <a className="button button-accent" href="#starter">{t.audit} <span>↘</span></a>
+            <a className="text-link" href="#realisations">{t.seeCases} <span>↗</span></a>
           </div>
-          <p className="hero-note"><span>✓</span>{t.heroNote}</p>
+          <div className="proof-row"><span><b>FR</b> / تونسي / EN</span><span>Nabeul · Tunisia</span><span>Social-first</span></div>
         </div>
         <div className="hero-visual" aria-label="Sélection de créations AI Marketing Tunisia">
-          <div className="hero-disc" />
-          <figure className="hero-frame hero-frame-main"><img src="/work/reel-01.jpg" alt="Création publicitaire produit" /></figure>
-          <figure className="hero-frame hero-frame-left"><img src="/work/reel-04.jpg" alt="UGC tunisien" /></figure>
-          <figure className="hero-frame hero-frame-right"><img src="/work/static-ads/tunisian-rocking-chair-lifestyle-ad.webp" alt="Publicité statique lifestyle" /></figure>
-          <div className="hero-stamp"><b>AI</b><small>× HUMAN</small></div>
-          <div className="hero-visual-label"><span>{t.visualTag}</span><b>{t.visualText}</b></div>
+          <div className="orbit orbit-one" /><div className="orbit orbit-two" />
+          <figure className="frame frame-main"><img src="/work/product-reel-volcano.png" alt="Publicité produit avec une créatrice devant un volcan" /></figure>
+          <figure className="frame frame-top"><img src="/work/reel-04.jpg" alt="Création UGC tunisienne" /></figure>
+          <figure className="frame frame-bottom"><img src="/work/reel-05.jpg" alt="Démonstration produit" /></figure>
+          <div className="made-stamp"><span>AI</span><small>MADE IN<br />NABEUL</small></div>
+          <p className="visual-caption">{t.visualText}</p>
         </div>
       </section>
 
@@ -357,6 +380,14 @@ export default function AgencySite() {
           <div className="metric-card metric-small"><strong>638</strong><span>{t.comments}</span></div>
           <p>FRAISITA<br /><b>×</b> BANANITO</p>
         </div>
+      </section>
+
+      <section className="work section-pad" id="realisations">
+        <div className="work-intro"><p className="section-tag">{t.selected}</p><h2>{t.workTitle}</h2><p>{t.workNote}</p></div>
+        <div className="work-grid">
+          {t.projects.map(([title, description], i) => <a key={title} className={`work-card work-${i + 1}`} href={projectLinks[i]} target="_blank" rel="noreferrer"><img src={projectImages[i]} alt={title} loading="lazy" /><span className="work-index">0{i + 1}</span><div className="work-overlay"><h3>{title}</h3><p>{description}</p><b>↗</b></div></a>)}
+        </div>
+        <a className="instagram-link" href={instagramProfile} target="_blank" rel="noreferrer"><span>@aimarketingagencytn</span><b>{t.allInstagram} ↗</b></a>
       </section>
 
       <section className="static-showcase section-pad" id="creative">
