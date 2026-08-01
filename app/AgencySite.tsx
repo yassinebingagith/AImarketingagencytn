@@ -1,103 +1,250 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 import { useEffect, useMemo, useState } from "react";
 
 type Lang = "fr" | "tn" | "en";
 
+const instagramProfile = "https://www.instagram.com/aimarketingagencytn/";
+const trendCaseUrl = "https://www.instagram.com/p/DYVANyKC1O5/";
+const ugcCaseUrl = "https://www.instagram.com/p/DZYIbyDuWxz/";
+
+const staticAds = [
+  { src: "/work/static-ads/tunisian-rocking-chair-comparison-ad.webp", angle: "Comparison", alt: "Publicité comparative tunisienne pour une chaise basculante en bois massif et cuir capitonné" },
+  { src: "/work/static-ads/rocking-chair-comfort-comparison-ad.webp", angle: "Problem / solution", alt: "Publicité problème solution comparant une chaise basculante confortable à une chaise ordinaire" },
+  { src: "/work/static-ads/luxury-rocking-chair-back-comfort-ad.webp", angle: "Benefit", alt: "Publicité tunisienne mettant en avant le confort du dos d'une chaise basculante de luxe" },
+  { src: "/work/static-ads/tunisian-rocking-chair-lifestyle-ad.webp", angle: "Lifestyle", alt: "Publicité lifestyle tunisienne montrant une femme détendue dans une chaise basculante" },
+  { src: "/work/static-ads/rocking-chair-cat-comfort-ad.webp", angle: "Emotion", alt: "Publicité émotionnelle avec un chat dormant dans une chaise basculante confortable" },
+  { src: "/work/static-ads/solid-wood-tufted-leather-rocking-chair-ad.webp", angle: "Product detail", alt: "Gros plan publicitaire sur le bois massif et le cuir capitonné d'une chaise basculante" },
+] as const;
+
 const copy = {
   fr: {
-    nav: ["Services", "Réalisations", "Méthode", "FAQ"],
-    start: "Démarrer un projet",
-    eyebrow: "Studio créatif IA · Nabeul, Tunisie",
-    heroA: "Des pubs IA qui", heroB: "ne ressemblent pas à de l’IA.",
-    heroText: "Concept, storytelling, voix et production : nous transformons vos produits en contenus qui arrêtent le scroll — avec une vraie touche tunisienne.",
-    audit: "Recevoir mon mini-audit", work: "Voir les réalisations",
-    visualLabel: "Créé en Tunisie. Pensé pour performer partout.",
-    strip: ["UGC hyper-réaliste", "Publicités produit", "Voix off Darja", "Storytelling social", "Production IA"],
-    problemTag: "Le vrai problème",
-    problemTitle: "Votre audience ne manque pas de contenu. Elle manque d’une raison de s’arrêter.",
-    problemText: "Nous combinons l’intelligence des outils IA avec la compréhension des codes locaux pour produire plus vite, sans sacrifier l’idée, l’émotion ou la crédibilité.",
-    pillars: [["01", "Attirer", "Des concepts visuels forts, pensés pour gagner les trois premières secondes."], ["02", "Convaincre", "Des démonstrations, histoires et UGC qui rendent votre produit évident."], ["03", "Convertir", "Des variations créatives adaptées à votre offre, votre canal et votre audience."]],
-    serviceTag: "Ce que nous créons", serviceTitle: "Un studio agile, de l’idée au dernier cut.",
-    services: [["AI UGC", "Des personnages et scènes hyper-réalistes pour présenter votre produit naturellement.", "Casting virtuel · Script · Voix · Montage"], ["Product ads", "Révélations produit, démonstrations et visuels cinématiques conçus pour les réseaux.", "Concept · Images · Animation · Sound design"], ["Contenu localisé", "Des histoires qui parlent vraiment à votre marché, en français, Darja ou anglais.", "Adaptation culturelle · Voice-over · Sous-titres"]],
-    selected: "Sélection récente", workTitle: "Des idées qui prennent vie, image après image.",
-    workNote: "Extraits de Reels publiés sur notre Instagram. Cliquez pour voir le contenu original.",
-    projects: [["Produit → Reel", "Une image produit transformée en vidéo de vente hyper-réaliste."], ["Culture & sport", "Création visuelle forte autour d’un moment qui rassemble."], ["Hyper Reel", "Un contenu ordinaire repensé pour gagner en valeur perçue."], ["UGC tunisien", "Une histoire locale racontée avec des personnages générés par IA."], ["Démo produit", "Une situation d’usage simple, claire et immédiatement compréhensible."]],
-    allInstagram: "Explorer notre Instagram", methodTag: "Notre méthode",
-    methodTitle: "Moins de friction. Plus d’idées en mouvement.",
-    steps: [["01", "Diagnostic", "On clarifie l’offre, l’audience et le résultat attendu."], ["02", "Concept", "On construit l’angle, le script et la direction visuelle."], ["03", "Production", "On génère, anime, donne une voix et monte chaque scène."], ["04", "Optimisation", "On décline les meilleurs angles pour vos canaux."]],
-    diagTag: "Mini-brief interactif", diagTitle: "Quel contenu peut débloquer votre croissance ?",
-    diagText: "Trois choix. Une recommandation claire. Aucun formulaire interminable.",
-    questions: ["Votre priorité aujourd’hui ?", "Quel format vous intéresse ?", "Quand voulez-vous lancer ?"],
-    options: [["Faire connaître ma marque", "Vendre un produit", "Créer régulièrement"], ["UGC / témoignage", "Pub produit", "Série de contenus"], ["Dès que possible", "Ce mois-ci", "Je prépare mon projet"]],
-    resultTag: "Votre piste créative", resultTitle: "Commencez par un concept pilote, puis déclinez ce qui capte le mieux l’attention.",
-    resultText: "Votre mini-brief est prêt. Envoyez-le-nous : nous reviendrons avec un premier angle créatif adapté.",
-    send: "Envoyer mon brief par Gmail", restart: "Recommencer", copyEmail: "Copier l’adresse email", copied: "Adresse copiée !",
-    faqTag: "Questions fréquentes", faqTitle: "Clair avant de créer.",
-    faqs: [["Est-ce que tout est généré par IA ?", "L’IA accélère la production. La stratégie, l’idée, la sélection et la finition restent dirigées humainement."], ["Pouvez-vous créer en Darja ?", "Oui. La localisation tunisienne, les voix et les codes culturels font partie de notre approche."], ["Quels produits pouvez-vous mettre en scène ?", "Produits physiques, applications, services et concepts de marque. Le brief nous aide à choisir le bon format."], ["Comment démarre un projet ?", "Envoyez le mini-brief ou un DM Instagram. Nous clarifions ensuite le besoin, les livrables et le calendrier."]],
-    finalEyebrow: "Une idée en tête ?", finalTitle: "Faisons-en le contenu que votre audience n’oubliera pas.",
-    finalText: "Écrivez-nous avec votre produit, votre objectif et une référence que vous aimez.",
-    email: "Écrire par email", dm: "Envoyer un DM", based: "Basé à Nabeul · Disponible partout", rights: "AI Marketing Tunisia — Tous droits réservés.",
+    nav: ["Offres", "Résultats", "Créations", "Méthode", "FAQ"],
+    dm: "Envoyer mon produit",
+    eyebrow: "Performance creative agency · Tunisie",
+    heroA: "Des pubs qui arrêtent le scroll.",
+    heroB: "Et donnent envie d’acheter.",
+    heroText: "Vidéos publicitaires, UGC en Derja et visuels statiques pour les commerces, services et marques e-commerce tunisiennes.",
+    heroNote: "Pas de script ? Pas de stratégie ? Envoyez une photo. Nous trouvons l’angle.",
+    seeCases: "Voir nos concepts",
+    visualTag: "Vidéo + statique",
+    visualText: "Pensé pour attirer. Construit pour convaincre.",
+    proofTrend: "sur une création trend originale",
+    proofComments: "commentaires organiques",
+    proofLanguages: "Français · Derja · English",
+    problemTag: "Votre point de départ",
+    problemTitle: "Vous avez le produit. Pas encore l’angle qui peut le vendre.",
+    problemText: "La plupart de nos clients arrivent avec une photo, une référence concurrente ou simplement l’envie de publier. Nous transformons ce point de départ en concept, hook, script et création prête à lancer.",
+    situations: [
+      ["01", "Je ne sais pas quoi publier", "Nous construisons la stratégie créative autour de l’offre, du public et de l’objection principale."],
+      ["02", "Je veux utiliser une tendance", "Nous adaptons le mécanisme de la trend à votre produit et aux codes tunisiens."],
+      ["03", "Je veux un contenu comme celui-ci", "Nous décodons pourquoi la référence fonctionne, puis créons un angle original pour votre marque."],
+    ],
+    offersTag: "Ce que nous produisons",
+    offersTitle: "Un produit. Plusieurs façons de le rendre désirable.",
+    offersNote: "Production créative uniquement — nous ne gérons pas l’achat média.",
+    offers: [
+      ["Performance video ads", "Hooks, démonstrations, objections, bénéfices et mises en situation conçus pour vendre le produit.", "UGC · Product demo · B-roll · Voice-over"],
+      ["Trend-to-brand content", "Des tendances transformées en histoires de marque naturelles, rapides et culturellement justes.", "Trend scouting · Concept · Derja · Montage"],
+      ["Static ad systems", "Plusieurs angles visuels pour tester ce qui attire, rassure et déclenche le clic.", "Comparaison · Bénéfice · Lifestyle · Offre"],
+    ],
+    caseTag: "Creative case 01",
+    caseTitle: "Une trend tunisienne transformée en conversation de marque.",
+    caseText: "Concept, storytelling et exécution créés de zéro autour de Fraisita et Bananito, avec une adaptation naturelle en Derja.",
+    caseSteps: ["Trend repérée", "Twist tunisien", "Marque intégrée", "Conversation déclenchée"],
+    viewPost: "Voir la création originale",
+    likes: "J’aime",
+    comments: "Commentaires",
+    staticTag: "Static creative system",
+    staticTitle: "Six angles. Un seul produit. Zéro répétition.",
+    staticText: "Ces créations partent d’une simple photo produit. Chaque visuel attaque une motivation différente : comparer, rassurer, projeter, émouvoir ou prouver la qualité.",
+    ugcTag: "Creative case 02",
+    ugcTitle: "Un produit fonctionnel vendu par l’émotion.",
+    ugcText: "UGC tunisien en Derja avec B-roll cuts : le produit devient une idée de cadeau liée au Hajj et à la Omra, pas seulement un objet à présenter.",
+    ugcChips: ["Derja naturelle", "Hook émotionnel", "B-roll produit", "Format social"],
+    viewUgc: "Voir le UGC",
+    methodTag: "Comment ça marche",
+    methodTitle: "De la photo au concept prêt à lancer.",
+    steps: [
+      ["01", "Envoyez le produit", "Une photo, votre objectif et une référence si vous en avez une."],
+      ["02", "Nous trouvons l’angle", "Framework, hook, émotion et structure adaptés à votre audience."],
+      ["03", "Nous produisons", "Vidéo, UGC, voix, B-roll ou visuels statiques selon le concept."],
+      ["04", "Vous lancez", "Vous recevez des créations prêtes pour vos réseaux et campagnes."],
+    ],
+    starterTag: "Premier angle offert",
+    starterTitle: "Envoyez une photo. Recevez une piste créative.",
+    starterText: "Pas de formulaire. Ouvrez Instagram, envoyez votre produit et dites-nous ce que vous voulez vendre. Nous vous répondons avec un premier angle à explorer.",
+    starterItems: ["Une photo produit", "Votre objectif", "Une référence, si vous en avez une"],
+    starterCta: "Démarrer en DM Instagram",
+    faqTag: "Questions fréquentes",
+    faqTitle: "Clair avant de créer.",
+    faqs: [
+      ["Gérez-vous les campagnes publicitaires ?", "Non. Nous sommes spécialisés dans la stratégie et la production créative : vidéos et visuels statiques prêts à utiliser dans vos campagnes."],
+      ["Je n’ai ni script ni stratégie. Je peux quand même vous contacter ?", "Oui. C’est précisément notre rôle : transformer votre produit et votre objectif en angles, hooks et concepts publicitaires."],
+      ["Une photo du produit suffit-elle ?", "Oui pour démarrer. Selon le concept, nous pouvons construire une création complète à partir de votre photo et des informations essentielles sur l’offre."],
+      ["Pouvez-vous créer en Derja tunisienne ?", "Oui. La langue, le ton et les références culturelles tunisiennes sont au cœur de notre différence."],
+      ["Pouvez-vous reproduire une publicité que j’aime ?", "Nous utilisons votre référence pour comprendre le mécanisme qui vous plaît, puis nous créons une exécution originale adaptée à votre marque."],
+    ],
+    finalTag: "Votre produit mérite un meilleur angle",
+    finalTitle: "Vous envoyez la photo. Nous imaginons la pub.",
+    finalText: "DM avec votre produit, votre objectif et une référence. Nous revenons avec une première piste créative.",
+    based: "Basé à Nabeul · Créations disponibles partout",
+    rights: "AI Marketing Tunisia — Tous droits réservés.",
   },
   tn: {
-    nav: ["الخدمات", "خدمتنا", "كيفاش نخدمو", "أسئلة"], start: "نبداو مشروع",
-    eyebrow: "ستوديو إبداع بالـAI · نابل، تونس", heroA: "إشهار بالـAI", heroB: "ما يبانش مصنوع بالـAI.",
-    heroText: "من الفكرة والستوري للـvoice-over والمونتاج: نحوّلو البرودوي متاعك لكونتنو يوقّف السكرول، بلمسة تونسية صحيحة.",
-    audit: "نحب mini-audit", work: "نشوف خدمتكم", visualLabel: "مصنوع في تونس. يخدم وين ما كان.",
-    strip: ["UGC واقعي", "إشهار برودوي", "Voice-over بالدارجة", "ستوري تعيش", "Production بالـAI"],
-    problemTag: "المشكل الحقيقي", problemTitle: "الناس ما ينقصهاش كونتنو. ينقصها سبب باش توقف وتتفرّج.",
-    problemText: "نخلطو قوة أدوات الـAI مع فهمنا للسوق والكودات التونسية، باش ننتجو أسرع من غير ما نضيّعو الفكرة والإحساس والمصداقية.",
-    pillars: [["01", "نجبدو", "أفكار وصور قوية تشدّ الانتباه من أول 3 ثواني."], ["02", "نقنعو", "ديمو، حكايات وUGC يورّيو قيمة البرودوي بوضوح."], ["03", "نحوّلو", "نسخ كرياتيف متأقلمة مع العرض، القنال والجمهور."]],
-    serviceTag: "شنوة نصنعو", serviceTitle: "ستوديو سريع، من الفكرة للـfinal cut.",
-    services: [["AI UGC", "شخصيات ومشاهد واقعية تقدّم البرودوي بطريقة طبيعية.", "Casting virtuel · Script · Voix · Montage"], ["Product ads", "كشف برودوي، ديمو وصور سينمائية معمولة للسوشيال.", "Concept · Images · Animation · Sound design"], ["كونتنو محلّي", "حكايات تحكي بلغة السوق: بالدارجة، بالفرنسي ولا بالإنقليزي.", "Adaptation · Voice-over · Sous-titres"]],
-    selected: "آخر الإبداعات", workTitle: "أفكار تولّي حقيقة، صورة بصورة.", workNote: "لقطات من Reels منشورين على Instagram. إضغط باش تشوف الأصل.",
-    projects: [["من برودوي لـReel", "تصويرة برودوي تولّي فيديو بيع واقعي."], ["ثقافة وسبور", "Visual قوي على لحظة تجمع التوانسة."], ["Hyper Reel", "كونتنو عادي نطلّعولو القيمة."], ["UGC تونسي", "حكاية من ثقافتنا بشخصيات معمولة بالـAI."], ["Démo produit", "استعمال واضح وساهل يتفهم من أول نظرة."]],
-    allInstagram: "نشوفو الكل على Instagram", methodTag: "كيفاش نخدمو", methodTitle: "تعطيل أقل. أفكار أكثر تتحرّك.",
-    steps: [["01", "Diagnostic", "نفهمو العرض، الجمهور والنتيجة المطلوبة."], ["02", "Concept", "نبنيو الزاوية، السكريبت والـdirection visuelle."], ["03", "Production", "نصنعو، نحرّكو، نعطيو صوت ونركّبو المشاهد."], ["04", "Optimisation", "نخرّجو variations من أحسن الأفكار."]],
-    diagTag: "Mini-brief تفاعلي", diagTitle: "شنوة الكونتنو اللي ينجم يحرّك مشروعك؟", diagText: "3 إختيارات. توصية واضحة. بلا فورمولار طويل.",
-    questions: ["شنية الأولوية توّة؟", "شنوة الفورما اللي تحب عليه؟", "وقتاش تحب تطلق؟"],
-    options: [["نعرّف بالبراند", "نبيع برودوي", "نصنع كونتنو بانتظام"], ["UGC / تجربة", "إشهار برودوي", "سلسلة كونتنو"], ["في أقرب وقت", "الشهر هذا", "مازلت نحضّر"]],
-    resultTag: "الفكرة الأنسب ليك", resultTitle: "نبداو بكونسبت pilot، وبعد نطوّرو الزاوية اللي تشدّ أكثر.", resultText: "الـmini-brief حاضر. ابعثهولنا ونرجعولك بأول زاوية كرياتيف تناسب مشروعك.",
-    send: "نبعث الـbrief بـGmail", restart: "نعاود", copyEmail: "ننسخ الإيميل", copied: "الإيميل تنسخ !", faqTag: "أسئلة تتعاود", faqTitle: "نفهمو كل شي قبل ما نبدعو.",
-    faqs: [["كل شي مصنوع بالـAI؟", "الـAI يسرّع الإنتاج. أما الستراتيجي، الفكرة والـfinition يقودهم إنسان."], ["تنجموا تصنعوا بالدارجة؟", "إي. الدارجة، الصوت والكودات التونسية في قلب خدمتنا."], ["شنوة تنجموا تحطّو في الإشهار؟", "برودويات، applications، services وأفكار براند. الـbrief يحدّد أحسن فورما."], ["كيفاش نبداو؟", "ابعث الـmini-brief ولا DM على Instagram، وبعد نوضحو الخدمة والوقت."]],
-    finalEyebrow: "عندك فكرة؟", finalTitle: "نحوّلوها لكونتنو جمهورك ما ينساهش.", finalText: "ابعثلنا البرودوي، الهدف وreference يعجبك.",
-    email: "إيميل", dm: "DM على Instagram", based: "من نابل · نخدمو في كل بلاصة", rights: "AI Marketing Tunisia — الحقوق محفوظة.",
+    nav: ["شنوة نصنعو", "النتائج", "الكرياتيف", "كيفاش نخدمو", "أسئلة"],
+    dm: "ابعث البرودوي",
+    eyebrow: "Performance creative agency · تونس",
+    heroA: "إشهار يوقّف السكرول.",
+    heroB: "ويخلّي الناس تحب تشري.",
+    heroText: "Video ads، UGC بالدارجة وstatic visuals للتجار، الخدمات والـe-commerce التونسي.",
+    heroNote: "ما عندكش script ولا stratégie؟ ابعث تصويرة وإحنا نلقاو الزاوية.",
+    seeCases: "شوف الكونسبتات",
+    visualTag: "Video + Static",
+    visualText: "يشدّ الانتباه. يقنع. يبيع.",
+    proofTrend: "على trend creative أصلية",
+    proofComments: "تعليقات طبيعية",
+    proofLanguages: "Français · Derja · English",
+    problemTag: "منين نبدأو",
+    problemTitle: "عندك البرودوي. أما مازلت ما لقيتش الزاوية اللي تبيعو.",
+    problemText: "أغلب الحرفاء يجيونا بتصويرة، reference لمنافس ولا حتى فكرة بسيطة. إحنا نحوّلوها لconcept، hook، script وكرياتيف حاضر للإطلاق.",
+    situations: [
+      ["01", "ما نعرفش شنوة نهبّط", "نبنيو stratégie créative على العرض، الجمهور وأهم اعتراض عند الحريف."],
+      ["02", "نحب نستعمل trend", "نأقلمو الـtrend مع البرودوي والكودات التونسية بطريقة طبيعية."],
+      ["03", "نحب كونتنو كيف هذا", "نفهمو علاش الـreference تخدم ونصنعو زاوية أصلية للبراند متاعك."],
+    ],
+    offersTag: "شنوة ننتجو",
+    offersTitle: "برودوي واحد. برشة طرق باش نخليوه مرغوب.",
+    offersNote: "نصنعو الكرياتيف فقط — ما نسيّروشوش الإعلانات المدفوعة.",
+    offers: [
+      ["Performance video ads", "Hooks، demos، objections وbenefits معمولين باش يورّيو قيمة البرودوي.", "UGC · Product demo · B-roll · Voice-over"],
+      ["Trend-to-brand content", "Trends نردّوها حكايات براند طبيعية وسريعة وتحكي تونسي صحيح.", "Trend scouting · Concept · Derja · Montage"],
+      ["Static ad systems", "زوايا بصرية مختلفة باش تختبر شنوة يشدّ، يطمّن ويجيب الكليك.", "Comparaison · Bénéfice · Lifestyle · Offre"],
+    ],
+    caseTag: "Creative case 01",
+    caseTitle: "Trend تونسية ولّت conversation حول البراند.",
+    caseText: "Concept، storytelling وتنفيذ من الصفر حول Fraisita وBananito مع adaptation طبيعية بالدارجة.",
+    caseSteps: ["لقينا الـtrend", "زدنا twist تونسي", "دخلنا البراند", "خلقنا conversation"],
+    viewPost: "شوف الكرياتيف الأصلية",
+    likes: "J’aime",
+    comments: "تعليقات",
+    staticTag: "Static creative system",
+    staticTitle: "6 زوايا. برودوي واحد. بلا تكرار.",
+    staticText: "الكل بدا بتصويرة برودوي. كل visual يخدم motivation مختلفة: نقارنو، نطمّنو، نخليو الحريف يتخيّل، نحركو الإحساس ولا نورّيو الجودة.",
+    ugcTag: "Creative case 02",
+    ugcTitle: "برودوي عملي بعناه بالإحساس.",
+    ugcText: "UGC تونسي بالدارجة مع B-roll cuts: البرودوي ولّى هدية مرتبطة بالحج والعمرة، موش مجرد حاجة نعرضوها.",
+    ugcChips: ["دارجة طبيعية", "Hook عاطفي", "B-roll برودوي", "Format social"],
+    viewUgc: "شوف الـUGC",
+    methodTag: "كيفاش نخدمو",
+    methodTitle: "من التصويرة لكونسبت حاضر للإطلاق.",
+    steps: [
+      ["01", "ابعث البرودوي", "تصويرة، الهدف وreference كان عندك."],
+      ["02", "نلقاو الزاوية", "Framework، hook، emotion وstructure يناسبو جمهورك."],
+      ["03", "ننتجو", "Video، UGC، صوت، B-roll ولا static visuals حسب الكونسبت."],
+      ["04", "إنت تطلق", "تاخو كرياتيف حاضر للسوشيال والحملات."],
+    ],
+    starterTag: "أول زاوية علينا",
+    starterTitle: "ابعث تصويرة. خذ piste créative.",
+    starterText: "بلا formulaire. ابعث البرودوي على Instagram وقلنا شنوة تحب تبيع. نرجعولك بأول زاوية تنجم تخدم.",
+    starterItems: ["تصويرة برودوي", "الهدف متاعك", "Reference كان عندك"],
+    starterCta: "نبدأو بـDM Instagram",
+    faqTag: "أسئلة تتعاود",
+    faqTitle: "كل شي واضح قبل ما نبدعو.",
+    faqs: [
+      ["تسيّرو الإعلانات المدفوعة؟", "لا. إحنا متخصصين في stratégie والproduction créative: videos وstatic visuals حاضرين للحملات."],
+      ["ما عنديش script ولا stratégie، نجم نكلمكم؟", "إي. هذا بالضبط دورنا: نحوّلو البرودوي والهدف لزوايا، hooks وconcepts إشهارية."],
+      ["تصويرة برودوي تكفي؟", "تكفي باش نبدأو. حسب الكونسبت، ننجمو نبنيو الكرياتيف من التصويرة والمعلومات الأساسية على العرض."],
+      ["تنجموا تصنعوا بالدارجة؟", "إي. اللغة، الtone والكودات الثقافية التونسية في قلب خدمتنا."],
+      ["تنجموا تعاودوا إشهار عجبني؟", "نستعملو الـreference باش نفهمو علاش خدم، وبعد نصنعو execution أصلية تناسب البراند متاعك."],
+    ],
+    finalTag: "البرودوي يستحق زاوية أقوى",
+    finalTitle: "إنت تبعث التصويرة. إحنا نتخيّلو الإشهار.",
+    finalText: "ابعث البرودوي، الهدف وreference في DM. نرجعولك بأول piste créative.",
+    based: "من نابل · نخدمو وين ما كان",
+    rights: "AI Marketing Tunisia — الحقوق محفوظة.",
   },
   en: {
-    nav: ["Services", "Work", "Process", "FAQ"], start: "Start a project",
-    eyebrow: "AI creative studio · Nabeul, Tunisia", heroA: "AI ads that", heroB: "don’t look AI-made.",
-    heroText: "Concept, storytelling, voice and production: we turn your products into scroll-stopping content—with an authentic Tunisian touch.",
-    audit: "Get my mini-audit", work: "See our work", visualLabel: "Made in Tunisia. Built to perform anywhere.",
-    strip: ["Hyper-real UGC", "Product ads", "Tunisian voice-over", "Social storytelling", "AI production"],
-    problemTag: "The real problem", problemTitle: "Your audience doesn’t need more content. It needs a reason to stop.",
-    problemText: "We combine the speed of AI tools with a sharp understanding of local culture to produce faster—without losing the idea, emotion or credibility.",
-    pillars: [["01", "Attract", "Strong visual concepts designed to win the first three seconds."], ["02", "Persuade", "Demos, stories and UGC that make your product feel obvious."], ["03", "Convert", "Creative variations shaped around your offer, channel and audience."]],
-    serviceTag: "What we create", serviceTitle: "One agile studio, from idea to final cut.",
-    services: [["AI UGC", "Hyper-real characters and scenes that introduce your product naturally.", "Virtual casting · Script · Voice · Edit"], ["Product ads", "Product reveals, demos and cinematic visuals designed for social.", "Concept · Images · Animation · Sound"], ["Localized content", "Stories that speak your market’s language in Tunisian, French or English.", "Cultural adaptation · Voice-over · Subtitles"]],
-    selected: "Recent selection", workTitle: "Ideas brought to life, frame by frame.", workNote: "Still frames from Reels published on our Instagram. Click to see the original.",
-    projects: [["Product → Reel", "One product image transformed into a hyper-real sales video."], ["Culture & sport", "A bold visual built around a moment that brings people together."], ["Hyper Reel", "Ordinary content reworked to increase perceived value."], ["Tunisian UGC", "A local story told with AI-generated characters."], ["Product demo", "A simple use case that is instantly easy to understand."]],
-    allInstagram: "Explore our Instagram", methodTag: "Our process", methodTitle: "Less friction. More ideas in motion.",
-    steps: [["01", "Diagnose", "We clarify the offer, audience and desired outcome."], ["02", "Concept", "We build the angle, script and visual direction."], ["03", "Produce", "We generate, animate, voice and edit every scene."], ["04", "Optimize", "We turn the strongest angles into channel-ready variations."]],
-    diagTag: "Interactive mini-brief", diagTitle: "What content could unlock your next growth step?", diagText: "Three choices. One clear recommendation. No endless form.",
-    questions: ["What is your priority?", "Which format interests you?", "When do you want to launch?"],
-    options: [["Build brand awareness", "Sell a product", "Create consistently"], ["UGC / testimonial", "Product ad", "Content series"], ["As soon as possible", "This month", "I’m still planning"]],
-    resultTag: "Your creative direction", resultTitle: "Start with one pilot concept, then scale the angle that earns the most attention.", resultText: "Your mini-brief is ready. Send it and we’ll return with an initial creative angle for your brand.",
-    send: "Send my brief with Gmail", restart: "Start again", copyEmail: "Copy email address", copied: "Email copied!", faqTag: "Frequently asked", faqTitle: "Clarity before creativity.",
-    faqs: [["Is everything AI-generated?", "AI accelerates production. Strategy, ideas, selection and final craft remain human-directed."], ["Can you create in Tunisian Derja?", "Yes. Local language, voices and cultural codes are central to how we work."], ["What can you advertise?", "Physical products, apps, services and brand concepts. Your brief helps us pick the right format."], ["How does a project start?", "Send the mini-brief or an Instagram DM. We’ll clarify the need, deliverables and timing."]],
-    finalEyebrow: "Have an idea?", finalTitle: "Let’s turn it into content your audience remembers.", finalText: "Send us your product, your goal and one reference you love.",
-    email: "Email us", dm: "Send a DM", based: "Based in Nabeul · Available everywhere", rights: "AI Marketing Tunisia — All rights reserved.",
+    nav: ["Offers", "Results", "Creative", "Process", "FAQ"],
+    dm: "Send your product",
+    eyebrow: "Performance creative agency · Tunisia",
+    heroA: "Ads that stop the scroll.",
+    heroB: "And make people want the product.",
+    heroText: "Video ads, Tunisian UGC and static creatives for local shops, service businesses and ecommerce brands.",
+    heroNote: "No script? No strategy? Send a product photo. We will find the angle.",
+    seeCases: "See our concepts",
+    visualTag: "Video + static",
+    visualText: "Built to attract. Structured to persuade.",
+    proofTrend: "on one original trend creative",
+    proofComments: "organic comments",
+    proofLanguages: "French · Derja · English",
+    problemTag: "Your starting point",
+    problemTitle: "You have the product. Not yet the angle that can sell it.",
+    problemText: "Most clients arrive with a photo, a competitor reference or simply the need to post. We turn that starting point into a concept, hook, script and launch-ready creative.",
+    situations: [
+      ["01", "I don’t know what to post", "We build the creative strategy around your offer, audience and biggest objection."],
+      ["02", "I want to use a trend", "We adapt the trend’s mechanism to your product and Tunisian culture."],
+      ["03", "I want content like this", "We decode why the reference works, then create an original angle for your brand."],
+    ],
+    offersTag: "What we produce",
+    offersTitle: "One product. Many ways to make it desirable.",
+    offersNote: "Creative production only — we do not manage media buying.",
+    offers: [
+      ["Performance video ads", "Hooks, demonstrations, objections, benefits and scenarios designed to sell the product.", "UGC · Product demo · B-roll · Voice-over"],
+      ["Trend-to-brand content", "Trends transformed into fast, natural and culturally relevant brand stories.", "Trend scouting · Concept · Derja · Edit"],
+      ["Static ad systems", "Multiple visual angles to test what attracts, reassures and earns the click.", "Comparison · Benefit · Lifestyle · Offer"],
+    ],
+    caseTag: "Creative case 01",
+    caseTitle: "A Tunisian trend turned into a brand conversation.",
+    caseText: "Concept, storytelling and execution built from scratch around Fraisita and Bananito, naturally adapted in Tunisian Derja.",
+    caseSteps: ["Trend spotted", "Tunisian twist", "Brand integrated", "Conversation created"],
+    viewPost: "View the original creative",
+    likes: "Likes",
+    comments: "Comments",
+    staticTag: "Static creative system",
+    staticTitle: "Six angles. One product. Zero repetition.",
+    staticText: "Every creative started with a simple product photo. Each visual targets a different motivation: comparison, reassurance, aspiration, emotion or quality proof.",
+    ugcTag: "Creative case 02",
+    ugcTitle: "A functional product sold through emotion.",
+    ugcText: "Tunisian Derja UGC with B-roll cuts: the product becomes a meaningful Hajj and Umrah gift rather than an object to display.",
+    ugcChips: ["Natural Derja", "Emotional hook", "Product B-roll", "Social format"],
+    viewUgc: "Watch the UGC",
+    methodTag: "How it works",
+    methodTitle: "From product photo to launch-ready concept.",
+    steps: [
+      ["01", "Send the product", "One photo, your objective and a reference if you have one."],
+      ["02", "We find the angle", "Framework, hook, emotion and structure adapted to your audience."],
+      ["03", "We produce", "Video, UGC, voice, B-roll or static visuals depending on the concept."],
+      ["04", "You launch", "Receive creatives ready for social channels and campaigns."],
+    ],
+    starterTag: "First angle on us",
+    starterTitle: "Send a photo. Receive a creative direction.",
+    starterText: "No form. Open Instagram, send your product and tell us what you want to sell. We will reply with a first angle to explore.",
+    starterItems: ["One product photo", "Your objective", "A reference, if you have one"],
+    starterCta: "Start in Instagram DM",
+    faqTag: "Frequently asked",
+    faqTitle: "Clarity before creativity.",
+    faqs: [
+      ["Do you manage advertising campaigns?", "No. We specialize in creative strategy and production: video and static creatives ready to use in your campaigns."],
+      ["I have no script or strategy. Can I still contact you?", "Yes. That is exactly our role: turning your product and objective into advertising angles, hooks and concepts."],
+      ["Is one product photo enough?", "It is enough to start. Depending on the concept, we can build a complete creative from your photo and the essential offer details."],
+      ["Can you create in Tunisian Derja?", "Yes. Tunisian language, tone and cultural codes are central to our difference."],
+      ["Can you reproduce an ad I like?", "We use your reference to understand the mechanism you like, then create an original execution adapted to your brand."],
+    ],
+    finalTag: "Your product deserves a stronger angle",
+    finalTitle: "You send the photo. We imagine the ad.",
+    finalText: "DM your product, objective and one reference. We will return with a first creative direction.",
+    based: "Based in Nabeul · Creating everywhere",
+    rights: "AI Marketing Tunisia — All rights reserved.",
   },
 } as const;
-
-const projectLinks = ["https://www.instagram.com/reel/DYsN4QcufaY/", "https://www.instagram.com/reel/DaLVVZpNgA_/", "https://www.instagram.com/reel/DaGkOlOOqCT/", "https://www.instagram.com/reel/DZnBZNJNh1j/", "https://www.instagram.com/reel/DZX2LpDOfUX/"];
-const projectImages = ["/work/reel-01.jpg", "/work/reel-02.jpg", "/work/reel-03.jpg", "/work/reel-04.jpg", "/work/reel-05.jpg"];
 
 export default function AgencySite() {
   const [lang, setLang] = useState<Lang>("fr");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [copied, setCopied] = useState(false);
+  const [showMobileCta, setShowMobileCta] = useState(false);
   const t = copy[lang];
 
   useEffect(() => {
@@ -105,99 +252,154 @@ export default function AgencySite() {
     document.documentElement.dir = lang === "tn" ? "rtl" : "ltr";
   }, [lang]);
 
-  const emailHref = useMemo(() => {
-    const subject = lang === "tn" ? "Mini-brief — مشروع جديد" : lang === "en" ? "Mini-brief — New project" : "Mini-brief — Nouveau projet";
-    const body = `${t.questions.map((q, i) => `${q}\n${answers[i] || "—"}`).join("\n\n")}\n\nInstagram / site : `;
-    return `https://mail.google.com/mail/?view=cm&fs=1&to=aimarketingagencytn@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [answers, lang, t.questions]);
+  useEffect(() => {
+    const update = () => {
+      const starter = document.querySelector("#starter");
+      const rect = starter?.getBoundingClientRect();
+      const starterVisible = rect ? rect.top < window.innerHeight && rect.bottom > 0 : false;
+      setShowMobileCta(window.scrollY > 560 && !starterVisible);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
-  const directEmailHref = useMemo(() => {
-    const subject = lang === "tn" ? "مشروع جديد" : lang === "en" ? "New project inquiry" : "Demande de nouveau projet";
-    return `https://mail.google.com/mail/?view=cm&fs=1&to=aimarketingagencytn@gmail.com&su=${encodeURIComponent(subject)}`;
-  }, [lang]);
+  const navIds = ["offers", "results", "creative", "method", "faq"];
+  const year = useMemo(() => new Date().getFullYear(), []);
 
-  function choose(answer: string) { const next = [...answers]; next[step] = answer; setAnswers(next); setStep(step + 1); }
-  function resetQuiz() { setAnswers([]); setStep(0); }
-  async function copyEmailAddress() {
-    const email = "aimarketingagencytn@gmail.com";
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch {
-      const field = document.createElement("textarea");
-      field.value = email;
-      field.style.position = "fixed";
-      field.style.opacity = "0";
-      document.body.appendChild(field);
-      field.select();
-      document.execCommand("copy");
-      field.remove();
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2400);
-  }
-  function trackPointer(event: React.PointerEvent<HTMLElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-    event.currentTarget.style.setProperty("--my", `${event.clientY - rect.top}px`);
+  function chooseLang(next: Lang) {
+    setLang(next);
+    setMenuOpen(false);
   }
 
   return (
-    <main onPointerMove={trackPointer}>
+    <main id="top">
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="AI Marketing Tunisia"><img src="/brand/instagram-logo.jpg" alt="Logo AI Marketing Tunisia" /><span>AI Marketing<br /><b>Tunisia</b></span></a>
+        <a className="brand" href="#top" aria-label="AI Marketing Tunisia">
+          <img src="/brand/instagram-logo.jpg" alt="" width="46" height="46" />
+          <span>AI Marketing<br /><b>Tunisia</b></span>
+        </a>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Menu">{menuOpen ? "×" : "＋"}</button>
         <nav className={menuOpen ? "nav-open" : ""} aria-label="Navigation principale">
-          {t.nav.map((item, i) => <a key={item} href={["#services", "#realisations", "#methode", "#faq"][i]} onClick={() => setMenuOpen(false)}>{item}</a>)}
+          {t.nav.map((label, i) => <a key={navIds[i]} href={`#${navIds[i]}`} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
         <div className="header-actions">
-          <div className="lang-switch" aria-label="Langue">{(["fr", "tn", "en"] as Lang[]).map(code => <button key={code} className={lang === code ? "active" : ""} onClick={() => setLang(code)} aria-pressed={lang === code}>{code === "tn" ? "تونسي" : code.toUpperCase()}</button>)}</div>
-          <a className="button button-dark header-cta" href="#diagnostic">{t.start} <span>↗</span></a>
+          <div className="lang-switch" aria-label="Langue">
+            {(["fr", "tn", "en"] as Lang[]).map(code => <button key={code} className={lang === code ? "active" : ""} onClick={() => chooseLang(code)} aria-pressed={lang === code}>{code === "tn" ? "تونسي" : code.toUpperCase()}</button>)}
+          </div>
+          <a className="button button-dark header-cta" href={instagramProfile} target="_blank" rel="noreferrer">{t.dm} <span>↗</span></a>
         </div>
       </header>
 
-      <section className="hero" id="top">
+      <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow"><span></span>{t.eyebrow}</p><h1>{t.heroA}<br /><em>{t.heroB}</em></h1><p className="hero-text">{t.heroText}</p>
-          <div className="hero-actions"><a className="button button-accent" href="#diagnostic">{t.audit} <span>↘</span></a><a className="text-link" href="#realisations">{t.work} <span>↗</span></a></div>
-          <div className="proof-row"><span><b>FR</b> / تونسي / EN</span><span>Nabeul · Tunisia</span><span>Social-first</span></div>
+          <p className="eyebrow"><span />{t.eyebrow}</p>
+          <h1>{t.heroA}<em>{t.heroB}</em></h1>
+          <p className="hero-text">{t.heroText}</p>
+          <div className="hero-actions">
+            <a className="button button-accent" href={instagramProfile} target="_blank" rel="noreferrer">{t.dm} <span>↗</span></a>
+            <a className="text-link" href="#results">{t.seeCases} <span>↓</span></a>
+          </div>
+          <p className="hero-note"><span>✓</span>{t.heroNote}</p>
         </div>
         <div className="hero-visual" aria-label="Sélection de créations AI Marketing Tunisia">
-          <div className="orbit orbit-one"></div><div className="orbit orbit-two"></div>
-          <figure className="frame frame-main"><img src="/work/product-reel-volcano.png" alt="Publicité produit avec une créatrice devant un volcan" /></figure>
-          <figure className="frame frame-top"><img src="/work/reel-04.jpg" alt="Création UGC tunisienne" /></figure>
-          <figure className="frame frame-bottom"><img src="/work/reel-05.jpg" alt="Démonstration produit" /></figure>
-          <div className="made-stamp"><span>AI</span><small>MADE IN<br />NABEUL</small></div><p className="visual-caption">{t.visualLabel}</p>
+          <div className="hero-disc" />
+          <figure className="hero-frame hero-frame-main"><img src="/work/reel-01.jpg" alt="Création publicitaire produit" /></figure>
+          <figure className="hero-frame hero-frame-left"><img src="/work/reel-04.jpg" alt="UGC tunisien" /></figure>
+          <figure className="hero-frame hero-frame-right"><img src="/work/static-ads/tunisian-rocking-chair-lifestyle-ad.webp" alt="Publicité statique lifestyle" /></figure>
+          <div className="hero-stamp"><b>AI</b><small>× HUMAN</small></div>
+          <div className="hero-visual-label"><span>{t.visualTag}</span><b>{t.visualText}</b></div>
         </div>
       </section>
-      <div className="ticker" aria-label="Expertises"><div>{[...t.strip, ...t.strip].map((item, i) => <span key={`${item}-${i}`}>{item}<b>✦</b></span>)}</div></div>
+
+      <section className="proof-band" aria-label="Résultats et capacités">
+        <a href={trendCaseUrl} target="_blank" rel="noreferrer"><strong>34.5K</strong><span>{t.likes}<br />{t.proofTrend}</span></a>
+        <a href={trendCaseUrl} target="_blank" rel="noreferrer"><strong>638</strong><span>{t.proofComments}<br />Fraisita × Bananito</span></a>
+        <div><strong>3</strong><span>{t.proofLanguages}<br />Local-first creative</span></div>
+      </section>
 
       <section className="problem section-pad">
-        <div className="section-heading"><p className="section-tag">{t.problemTag}</p><h2>{t.problemTitle}</h2></div>
-        <div className="problem-side"><p>{t.problemText}</p><a href="#services" className="round-link" aria-label={t.serviceTag}>↓</a></div>
-        <div className="pillars">{t.pillars.map(([num, title, text]) => <article key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+        <div className="section-heading">
+          <p className="section-tag">{t.problemTag}</p>
+          <div><h2>{t.problemTitle}</h2><p className="section-lead">{t.problemText}</p></div>
+        </div>
+        <div className="situation-grid">
+          {t.situations.map(([num, title, text]) => <article key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}
+        </div>
       </section>
 
-      <section className="services section-pad" id="services">
-        <div className="section-heading split-heading"><div><p className="section-tag">{t.serviceTag}</p><h2>{t.serviceTitle}</h2></div><div className="service-orb">AI<br /><small>× HUMAN</small></div></div>
-        <div className="service-list">{t.services.map(([title, text, details], i) => <article key={title} className="service-card"><span className="service-num">0{i + 1}</span><h3>{title}</h3><p>{text}</p><small>{details}</small><span className="service-arrow">↗</span></article>)}</div>
+      <section className="offers section-pad" id="offers">
+        <div className="section-heading compact">
+          <p className="section-tag">{t.offersTag}</p>
+          <div><h2>{t.offersTitle}</h2><p className="production-note">{t.offersNote}</p></div>
+        </div>
+        <div className="offer-list">
+          {t.offers.map(([title, text, deliverables], i) => <article key={title}><span className="offer-num">0{i + 1}</span><h3>{title}</h3><p>{text}</p><small>{deliverables}</small><b>↗</b></article>)}
+        </div>
       </section>
 
-      <section className="work section-pad" id="realisations">
-        <div className="work-intro"><p className="section-tag">{t.selected}</p><h2>{t.workTitle}</h2><p>{t.workNote}</p></div>
-        <div className="work-grid">{t.projects.map(([title, description], i) => <a key={title} className={`work-card work-${i + 1}`} href={projectLinks[i]} target="_blank" rel="noreferrer"><img src={projectImages[i]} alt={title} /><span className="work-index">0{i + 1}</span><div className="work-overlay"><h3>{title}</h3><p>{description}</p><b>↗</b></div></a>)}</div>
-        <a className="instagram-link" href="https://www.instagram.com/aimarketingagencytn/" target="_blank" rel="noreferrer">@aimarketingagencytn <span>{t.allInstagram} ↗</span></a>
+      <section className="trend-case section-pad" id="results">
+        <div className="case-copy">
+          <p className="section-tag light">{t.caseTag}</p>
+          <h2>{t.caseTitle}</h2>
+          <p>{t.caseText}</p>
+          <div className="case-path">{t.caseSteps.map((step, i) => <span key={step}>{step}{i < t.caseSteps.length - 1 && <b>→</b>}</span>)}</div>
+          <a className="button button-accent" href={trendCaseUrl} target="_blank" rel="noreferrer">{t.viewPost} <span>↗</span></a>
+        </div>
+        <div className="metric-stage" aria-label="Résultats de la création">
+          <div className="metric-orbit orbit-a" />
+          <div className="metric-orbit orbit-b" />
+          <div className="metric-card metric-large"><strong>34.5K</strong><span>{t.likes}</span></div>
+          <div className="metric-card metric-small"><strong>638</strong><span>{t.comments}</span></div>
+          <p>FRAISITA<br /><b>×</b> BANANITO</p>
+        </div>
       </section>
 
-      <section className="method section-pad" id="methode">
-        <div className="section-heading"><p className="section-tag light">{t.methodTag}</p><h2>{t.methodTitle}</h2></div>
-        <div className="steps">{t.steps.map(([num, title, text]) => <article key={num}><span>{num}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+      <section className="static-showcase section-pad" id="creative">
+        <div className="static-intro">
+          <p className="section-tag">{t.staticTag}</p>
+          <h2>{t.staticTitle}</h2>
+          <p>{t.staticText}</p>
+        </div>
+        <div className="static-grid">
+          {staticAds.map((ad, i) => <figure key={ad.src} className={`static-ad static-ad-${i + 1}`}><img src={ad.src} alt={ad.alt} loading={i > 1 ? "lazy" : "eager"} width="1122" height="1402" /><figcaption><span>0{i + 1}</span>{ad.angle}</figcaption></figure>)}
+        </div>
       </section>
 
-      <section className="diagnostic section-pad" id="diagnostic">
-        <div className="diag-copy"><p className="section-tag">{t.diagTag}</p><h2>{t.diagTitle}</h2><p>{t.diagText}</p><div className="diag-progress" aria-label={`${Math.min(step, 3)} / 3`}><span style={{ width: `${Math.min(step, 3) * 33.333}%` }}></span></div></div>
-        <div className="quiz-card">
-          {step < 3 ? <><span className="quiz-count">0{step + 1} / 03</span><h3>{t.questions[step]}</h3><div className="quiz-options">{t.options[step].map(option => <button key={option} onClick={() => choose(option)}><span></span>{option}<b>→</b></button>)}</div></> :
-          <div className="quiz-result"><span className="result-check">✓</span><p className="section-tag">{t.resultTag}</p><h3>{t.resultTitle}</h3><p>{t.resultText}</p><div className="answer-chips">{answers.map(answer => <span key={answer}>{answer}</span>)}</div><div className="email-actions"><a className="button button-accent" href={emailHref} target="_blank" rel="noreferrer">{t.send} <span>↗</span></a><button className="copy-email" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button></div><button className="restart" onClick={resetQuiz}>{t.restart}</button></div>}
+      <section className="ugc-case section-pad">
+        <div className="ugc-visual"><img src="/work/reel-04.jpg" alt="Exemple de création UGC tunisienne" loading="lazy" /><span>UGC<br />DERJA</span></div>
+        <div className="ugc-copy">
+          <p className="section-tag">{t.ugcTag}</p>
+          <h2>{t.ugcTitle}</h2>
+          <p>{t.ugcText}</p>
+          <div className="chip-row">{t.ugcChips.map(chip => <span key={chip}>{chip}</span>)}</div>
+          <a className="text-link" href={ugcCaseUrl} target="_blank" rel="noreferrer">{t.viewUgc} <span>↗</span></a>
+        </div>
+      </section>
+
+      <section className="method section-pad" id="method">
+        <div className="section-heading compact">
+          <p className="section-tag light">{t.methodTag}</p>
+          <h2>{t.methodTitle}</h2>
+        </div>
+        <div className="method-grid">{t.steps.map(([num, title, text]) => <article key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      </section>
+
+      <section className="starter section-pad" id="starter">
+        <div className="starter-copy">
+          <p className="section-tag">{t.starterTag}</p>
+          <h2>{t.starterTitle}</h2>
+          <p>{t.starterText}</p>
+          <a className="button button-dark" href={instagramProfile} target="_blank" rel="noreferrer">{t.starterCta} <span>↗</span></a>
+        </div>
+        <div className="starter-card">
+          <div className="dm-top"><span className="dm-avatar">AI</span><div><b>@aimarketingagencytn</b><small>Instagram Direct</small></div><i>•••</i></div>
+          <div className="dm-bubble">{t.starterItems.map((item, i) => <p key={item}><span>0{i + 1}</span>{item}</p>)}</div>
+          <div className="dm-reply"><span>＋</span><b>{t.dm}…</b><i>➤</i></div>
         </div>
       </section>
 
@@ -206,13 +408,20 @@ export default function AgencySite() {
         <div className="faq-list">{t.faqs.map(([question, answer], i) => <details key={question} open={i === 0}><summary>{question}<span>＋</span></summary><p>{answer}</p></details>)}</div>
       </section>
 
-      <section className="final-cta"><p className="eyebrow light"><span></span>{t.finalEyebrow}</p><h2>{t.finalTitle}</h2><p>{t.finalText}</p><div><a className="button button-accent" href={directEmailHref} target="_blank" rel="noreferrer">{t.email} ↗</a><button className="button button-outline" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button><a className="button button-outline" href="https://www.instagram.com/aimarketingagencytn/" target="_blank" rel="noreferrer">{t.dm} ↗</a></div></section>
+      <section className="final-cta">
+        <p className="eyebrow light"><span />{t.finalTag}</p>
+        <h2>{t.finalTitle}</h2>
+        <p>{t.finalText}</p>
+        <a className="button button-accent" href={instagramProfile} target="_blank" rel="noreferrer">{t.starterCta} <span>↗</span></a>
+      </section>
+
       <footer>
-        <a className="brand footer-brand" href="#top"><img src="/brand/instagram-logo.jpg" alt="" /><span>AI Marketing<br /><b>Tunisia</b></span></a>
-        <div className="footer-contact"><a href={directEmailHref} target="_blank" rel="noreferrer">aimarketingagencytn@gmail.com</a><button className="footer-copy" type="button" onClick={copyEmailAddress}>{copied ? t.copied : t.copyEmail}</button><p>{t.based}</p></div>
-        <p className="copyright">© {new Date().getFullYear()} {t.rights}</p>
+        <a className="brand footer-brand" href="#top"><img src="/brand/instagram-logo.jpg" alt="" width="50" height="50" /><span>AI Marketing<br /><b>Tunisia</b></span></a>
+        <div className="footer-contact"><a href={instagramProfile} target="_blank" rel="noreferrer">@aimarketingagencytn ↗</a><p>{t.based}</p></div>
+        <p className="copyright">© {year} {t.rights}</p>
       </footer>
-      <a className="mobile-cta" href="#diagnostic">{t.audit} ↗</a>
+
+      <a className={`mobile-cta ${showMobileCta ? "visible" : ""}`} href={instagramProfile} target="_blank" rel="noreferrer">{t.dm} <span>↗</span></a>
     </main>
   );
 }

@@ -2,24 +2,22 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Marketing Tunisia — Publicités & contenu créés avec l’IA",
-  description:
-    "Agence créative à Nabeul. Publicités, UGC et contenu social produits avec l’IA, pensés pour attirer, convaincre et convertir.",
+  title: "AI Marketing Tunisia — Publicités vidéo & statiques pensées pour convertir",
+  description: "Agence de performance creative en Tunisie. Vidéos publicitaires, UGC en Derja, contenus tendance et static ads créés à partir de votre produit.",
   icons: {
     icon: "/brand/instagram-logo.jpg",
     shortcut: "/brand/instagram-logo.jpg",
   },
   openGraph: {
-    title: "AI Marketing Tunisia — Des idées qui arrêtent le scroll",
-    description:
-      "Publicités IA, UGC et contenu social ancrés dans la culture tunisienne.",
+    title: "AI Marketing Tunisia — Vous envoyez le produit. Nous imaginons la pub.",
+    description: "Performance video ads, UGC tunisien et static creatives pour commerces, services et marques e-commerce.",
     type: "website",
-    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "AI Marketing Tunisia" }],
+    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "AI Marketing Tunisia performance creative agency" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Marketing Tunisia — Des pubs IA qui ne ressemblent pas à de l’IA",
-    description: "UGC, product ads et contenu localisé depuis Nabeul.",
+    title: "AI Marketing Tunisia — Ads that stop the scroll",
+    description: "Video and static ad creative built for Tunisian brands.",
     images: ["/og.png"],
   },
 };
